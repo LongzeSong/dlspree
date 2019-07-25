@@ -56,11 +56,12 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --up
 RUN pip install --no-cache-dir https://download.pytorch.org/whl/cu100/torch-1.1.0-cp37-cp37m-linux_x86_64.whl \
 && pip install --no-cache-dir https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl
 
-# 安装常用的python包
+# 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
 RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
-&& pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper
+&& pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
+&& python3 -m pip --no-cache-dir install nni
 
 
 # 添加jupyter插件的配置文件
@@ -74,16 +75,16 @@ RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn
 && mv /tmp/notebook.json /root/.jupyter/nbconfig/
 # 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
 # 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
-RUN useradd --create-home --no-log-init --shell /bin/bash SongLongze \
-&& adduser SongLongze sudo \
-&& echo 'SongLongze:111' | chpasswd \
-&& chown -R SongLongze /home/SongLongze 
+# RUN useradd --create-home --no-log-init --shell /bin/bash SongLongze \
+# && adduser SongLongze sudo \
+# && echo 'SongLongze:111' | chpasswd \
+# && chown -R SongLongze /home/SongLongze 
 # 默认使用SongLongze用户打开容器
-USER SongLongze
+# USER SongLongze
 # 设定工作目录
 WORKDIR /home/SongLongze
-# 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006
-EXPOSE 22 8888 6006 
+# 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
+EXPOSE 22 8888 6006 8080
 
 # 设置自启动命令
 #CMD /usr/sbin/sshd -D &
