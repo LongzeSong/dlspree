@@ -6,7 +6,6 @@
 
 + `cuda`：`10.0`
 + `CUDNN`：`7`
-
 + `Anaconda`：`2019.03-Linux-x86_64`
 + `openssh-server`
 + `tensorflow-gpu`
@@ -15,5 +14,4 @@
 + `torchsnooper`
 + `pysnooper`
 + `NNI`
-+ `upyter_contrib_nbextensions`
-+ 
++ `jupyter_contrib_nbextensions` 

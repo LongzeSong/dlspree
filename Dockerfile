@@ -82,7 +82,7 @@ RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn
 # 默认使用SongLongze用户打开容器
 # USER SongLongze
 # 设定工作目录
-WORKDIR /home/SongLongze
+# WORKDIR /home/SongLongze
 # 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
 EXPOSE 22 8888 6006 8080
 
