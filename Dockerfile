@@ -86,7 +86,7 @@ RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn
 # 创建工作目录并开放所有权限
 RUN mkdir /workdir \
 && chomod 777 /workdir
-
+WORKDIR /workdir
 # 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
 EXPOSE 22 8888 6006 8080
 
