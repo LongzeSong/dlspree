@@ -65,7 +65,7 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 
 
 # 添加jupyter插件的配置文件
-ADD notebook.json  /tmp/
+COPY ["notebook.json", " run.sh", "/tmp/"]
 # 安装jupyter插件
 RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn/simple \
 && jupyter contrib nbextension install --user \
@@ -83,6 +83,10 @@ RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn
 # USER SongLongze
 # 设定工作目录
 # WORKDIR /home/SongLongze
+# 创建工作目录并开放所有权限
+RUN mkdir /workdir \
+&& chomod 777 /workdir
+
 # 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
 EXPOSE 22 8888 6006 8080
 
