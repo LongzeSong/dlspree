@@ -62,13 +62,15 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
 # 安装NNI
-&& python3 -m pip --no-cache-dir install nni
+&& python3 -m pip --no-cache-dir install nni \
+# 安装tensorboardX
+&& pip install tensorboardX
 
 
 # 添加jupyter插件的配置文件
 COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
-RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn/simple \
+RUN pip install jupyter_contrib_nbextensions \
 && jupyter contrib nbextension install --user \
 && pip install --user jupyter_nbextensions_configurator \
 && jupyter nbextensions_configurator enable --user \
