@@ -80,6 +80,13 @@ RUN pip install jupyter_contrib_nbextensions \
 && mkdir /.local \
 && chmod 777 /.local
 
+# 设定工作目录
+# WORKDIR /home/SongLongze
+# 创建工作目录并开放所有权限
+RUN mkdir /workdir \
+&& chmod 777 /workdir
+WORKDIR /workdi
+
 # 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
 # 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
 RUN useradd --create-home --no-log-init --shell /bin/bash PublicUser \
@@ -88,12 +95,7 @@ RUN useradd --create-home --no-log-init --shell /bin/bash PublicUser \
 && chown -R PublicUser /home/PublicUser 
 # 默认使用PublicUser用户打开容器
 USER PublicUser
-# 设定工作目录
-# WORKDIR /home/SongLongze
-# 创建工作目录并开放所有权限
-RUN mkdir /workdir \
-&& chmod 777 /workdir
-WORKDIR /workdir
+
 # 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
 EXPOSE 22 8888 6006 8080
 
