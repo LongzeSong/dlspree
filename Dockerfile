@@ -40,7 +40,7 @@ RUN mkdir -p /var/run/sshd \
 #　安装Anaconda
 # COPY anaconda.sh /
 # 下载 安装anaconda并配置环境变量
-RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh -O ~/anaconda.sh \
+RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh \
 # 安装anaconda
 && /bin/bash ~/anaconda.sh -b -p /opt/conda \
 # 删除安装包
