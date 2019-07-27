@@ -1,6 +1,6 @@
-From nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
-MAINTAINER by songlongze
+MAINTAINER songlongze
 
 # 设置环境变量
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -16,7 +16,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
-RUN buildDeps='wget openssh-server net-tools ' \ 
+RUN buildDeps='wget openssh-server net-tools sudo vim ' \ 
 && apt-get update \
 && apt-get install -y $buildDeps \
 # 清除apt缓存
@@ -32,21 +32,21 @@ RUN mkdir -p /var/run/sshd \
 # 修改密码为111
 && echo root:111 | chpasswd
 
+# RUN  groupadd  anaconda \
+# && mkdir /opt/anaconda3 \
+# &&  chgrp -R anaconda /opt/anaconda3\
+# && chmod 777 -R /opt/anaconda3
 
 #　安装Anaconda
-
+# COPY anaconda.sh /
 # 下载 安装anaconda并配置环境变量
 RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh -O ~/anaconda.sh \
 # 安装anaconda
 && /bin/bash ~/anaconda.sh -b -p /opt/conda \
 # 删除安装包
 && rm ~/anaconda.sh \
-# 添加环境变量
-&& echo "export PATH=/opt/conda/bin:$PATH" >> ~/.bashrc \
-# RUN source ~/.bashrc
-# 上面这种会报错 要用 bash运行 不知道起不起作用
-&& /bin/bash -c "source ~/.bashrc" 
-
+&& ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh  \
+&& echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
 # 从清华源安装最新稳定版tensorflow-gpu 以及 keras
 RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu \
@@ -61,31 +61,36 @@ RUN pip install --no-cache-dir https://download.pytorch.org/whl/cu100/torch-1.1.
 RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
+# 安装NNI
 && python3 -m pip --no-cache-dir install nni
 
 
 # 添加jupyter插件的配置文件
-COPY ["notebook.json", " run.sh", "/tmp/"]
+COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
 RUN pip install jupyter_contrib_nbextensions -i https://pypi.mirrors.ustc.edu.cn/simple \
 && jupyter contrib nbextension install --user \
 && pip install --user jupyter_nbextensions_configurator \
 && jupyter nbextensions_configurator enable --user \
 # 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用
-&& mv /tmp/notebook.json /root/.jupyter/nbconfig/
+&& mv /tmp/notebook.json /root/.jupyter/nbconfig/ \
+# 开放/.local的权限保证所有用户皆可使用jupyter
+&& mkdir /.local \
+&& chmod 777 /.local
+
 # 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
 # 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
-# RUN useradd --create-home --no-log-init --shell /bin/bash SongLongze \
-# && adduser SongLongze sudo \
-# && echo 'SongLongze:111' | chpasswd \
-# && chown -R SongLongze /home/SongLongze 
-# 默认使用SongLongze用户打开容器
-# USER SongLongze
+RUN useradd --create-home --no-log-init --shell /bin/bash PublicUser \
+&& adduser PublicUser sudo \
+&& echo 'PublicUser:111' | chpasswd \
+&& chown -R PublicUser /home/PublicUser 
+# 默认使用PublicUser用户打开容器
+USER PublicUser
 # 设定工作目录
 # WORKDIR /home/SongLongze
 # 创建工作目录并开放所有权限
 RUN mkdir /workdir \
-&& chomod 777 /workdir
+&& chmod 777 /workdir
 WORKDIR /workdir
 # 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
 EXPOSE 22 8888 6006 8080
