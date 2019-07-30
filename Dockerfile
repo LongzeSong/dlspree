@@ -6,7 +6,10 @@ MAINTAINER songlongze
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Anaconda的环境变量
 ENV PATH /opt/conda/bin:$PATH
-
+ENV TF_VERSION=1.13.1 \
+ANANCONDA_VERSION=Anaconda3-2019.07-Linux-x86_64\
+TORCH_URL="https://download.pytorch.org/whl/cu100/torch-1.1.0-cp37-cp37m-linux_x86_64.whl" \
+TORCH_VRISION_URL="https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl"
 
 # 更新apt-get， 一般不进行update。，因为许多基础镜像中的「必须」包不会在一个非特权容器中升级。
 # 如果基础镜像中的某个包过时了，你应该联系它的维护者。
@@ -40,7 +43,7 @@ RUN mkdir -p /var/run/sshd \
 #　安装Anaconda
 # COPY anaconda.sh /
 # 下载 安装anaconda并配置环境变量
-RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh -O ~/anaconda.sh \
+RUN wget --quiet https://repo.anaconda.com/archive/${ANANCONDA_VERSION}.sh -O ~/anaconda.sh \
 # 安装anaconda
 && /bin/bash ~/anaconda.sh -b -p /opt/conda \
 # 删除安装包
@@ -49,12 +52,12 @@ RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_6
 && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
 # 从清华源安装最新稳定版tensorflow-gpu 以及 keras
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu==1.13.1 \
+RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu==${TF_VERSION} \
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade keras
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
-RUN pip install --no-cache-dir https://download.pytorch.org/whl/cu100/torch-1.1.0-cp37-cp37m-linux_x86_64.whl \
-&& pip install --no-cache-dir https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl
+RUN pip install --no-cache-dir${TORCH_URL} \
+&& pip install --no-cache-dir ${TORCH_VRISION_URL}
 
 # 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
