@@ -89,7 +89,7 @@ WORKDIR /workdir
 
 # 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
 # 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
-RUN useradd --create-home --no-log-init --shell /bin/bash PublicUser \
+RUN useradd -u 65000 --create-home --no-log-init --shell /bin/bash PublicUser \
 && adduser PublicUser sudo \
 && echo 'PublicUser:111' | chpasswd \
 && chown -R PublicUser /home/PublicUser 
