@@ -49,7 +49,7 @@ RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_6
 && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
 # 从清华源安装最新稳定版tensorflow-gpu 以及 keras
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu \
+RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu=1.13.1 \
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade keras
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
