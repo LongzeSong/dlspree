@@ -35,8 +35,8 @@ RUN mkdir -p /var/run/sshd \
 # RUN  groupadd  anaconda \
 # && mkdir /opt/anaconda3 \
 # &&  chgrp -R anaconda /opt/anaconda3\
-# && chmod 777 -R /opt/anaconda3
 
+# && chmod 777 -R /opt/anaconda3
 #　安装Anaconda
 # COPY anaconda.sh /
 # 下载 安装anaconda并配置环境变量
@@ -85,7 +85,7 @@ RUN pip install jupyter_contrib_nbextensions \
 # 创建工作目录并开放所有权限
 RUN mkdir /workdir \
 && chmod 777 /workdir
-WORKDIR /workdi
+WORKDIR /workdir
 
 # 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
 # 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
