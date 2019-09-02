@@ -67,7 +67,7 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 # 安装tensorboardX
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
-&& pip3 install xgboost
+&& pip install xgboost
 
 
 
