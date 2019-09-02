@@ -7,12 +7,12 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Anaconda的环境变量
 ENV PATH /opt/conda/bin:$PATH 
 
-
-# 更新apt-get， 一般不进行update。，因为许多基础镜像中的「必须」包不会在一个非特权容器中升级。
-# 如果基础镜像中的某个包过时了，你应该联系它的维护者。
-# 如果你确定某个特定的包，比如 foo，需要升级，使用 apt-get install -y foo 就行，该指令会自动升级 foo 包。
-# update操作需要和install放在统一个RUN避免出现问题
-
+# torch1.2-cuda10
+ENV TF_VERSION=1.13.1 \
+ANACONDA_VERSION="Anaconda3-2019.07-Linux-x86_64" \
+TORCH_URL="torch" \
+TORCH_VRISION_URL="torchvision" \
+TENSORBOARDX_VERSION=1.7
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
@@ -31,13 +31,6 @@ RUN mkdir -p /var/run/sshd \
 && echo  PermitRootLogin yes >> /etc/ssh/sshd_config \
 # 修改密码为111
 && echo root:111 | chpasswd
-
-ENV TF_VERSION=1.13.1 \
-ANACONDA_VERSION="Anaconda3-2019.07-Linux-x86_64" \
-TORCH_URL="https://download.pytorch.org/whl/cu100/torch-1.1.0-cp37-cp37m-linux_x86_64.whl" \
-TORCH_VRISION_URL="https://download.pytorch.org/whl/cu100/torchvision-0.3.0-cp37-cp37m-linux_x86_64.whl" \
-TENSORBOARDX_VERSION=1.7
-
 
 # RUN  groupadd  anaconda \
 # && mkdir /opt/anaconda3 \
@@ -72,7 +65,10 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 # 安装NNI
 && python3 -m pip --no-cache-dir install nni \
 # 安装tensorboardX
-&& pip install tensorboardX==$TENSORBOARDX_VERSION
+&& pip install tensorboardX==$TENSORBOARDX_VERSION \
+# 安装XGBoost
+&& pip3 install xgboost
+
 
 
 # 添加jupyter插件的配置文件

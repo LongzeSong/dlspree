@@ -10,10 +10,11 @@
 + `openssh-server`
 + `tensorflow-gpu`：`1.13.1`
 + `tensorboardX`：`1.7`
-+ `pytorch`:`1.1.0`
++ `pytorch`:`1.2`
 + `keras`
 + `autopep8`
 + `torchsnooper`
 + `pysnooper`
 + `NNI`
 + `jupyter_contrib_nbextensions` 
++ `xgboost`
