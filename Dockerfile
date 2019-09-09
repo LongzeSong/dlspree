@@ -75,9 +75,9 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
 RUN pip install jupyter_contrib_nbextensions \
-&& jupyter contrib nbextension install --user \
-&& pip install --user jupyter_nbextensions_configurator \
-&& jupyter nbextensions_configurator enable --user \
+&& jupyter contrib nbextension install --system \
+&& pip install --system jupyter_nbextensions_configurator \
+&& jupyter nbextensions_configurator enable --system \
 # 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用
 && mv /tmp/notebook.json /root/.jupyter/nbconfig/ \
 # 开放/.local的权限保证所有用户皆可使用jupyter
