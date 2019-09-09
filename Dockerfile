@@ -76,7 +76,7 @@ COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
 RUN pip install jupyter_contrib_nbextensions \
 && jupyter contrib nbextension install --system \
-&& pip install --system jupyter_nbextensions_configurator \
+&& pip install jupyter_nbextensions_configurator \
 && jupyter nbextensions_configurator enable --system \
 # 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用
 && mv /tmp/notebook.json /root/.jupyter/nbconfig/ \
