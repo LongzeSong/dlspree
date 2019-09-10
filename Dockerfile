@@ -79,9 +79,9 @@ RUN pip install jupyter_contrib_nbextensions \
 && pip install jupyter_nbextensions_configurator \
 && jupyter nbextensions_configurator enable --system \
 # 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用
-&& mkdir /.jupyter/nbconfig/ \
-&& chmod 777 /.jupyter/nbconfig/ \
-&& mv /tmp/notebook.json /.jupyter/nbconfig/ \
+# && mkdir /.jupyter/nbconfig/ \
+# && chmod 777 /.jupyter/nbconfig/ \
+# && mv /tmp/notebook.json /.jupyter/nbconfig/ \
 # 开放/.local的权限保证所有用户皆可使用jupyter
 && mkdir /.local \
 && chmod 777 /.local
