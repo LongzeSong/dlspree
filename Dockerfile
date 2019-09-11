@@ -63,7 +63,7 @@ RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ auto
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
 # 安装最新NNI
-&& python3 -m pip --no-cache-dir install  --upgradenni \
+&& python3 -m pip --no-cache-dir install  --upgrade nni \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
 && pip install xgboost
