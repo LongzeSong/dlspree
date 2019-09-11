@@ -62,9 +62,8 @@ RUN pip install --no-cache-dir $TORCH_URL \
 RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
-# 安装NNI
-&& python3 -m pip --no-cache-dir install nni \
-# 安装tensorboardX
+# 安装最新NNI
+&& python3 -m pip --no-cache-dir install  --upgradenni \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
 && pip install xgboost
@@ -78,10 +77,11 @@ RUN pip install jupyter_contrib_nbextensions \
 && jupyter contrib nbextension install --system \
 && pip install jupyter_nbextensions_configurator \
 && jupyter nbextensions_configurator enable --system \
-# 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用
-# && mkdir /.jupyter/nbconfig/ \
-# && chmod 777 /.jupyter/nbconfig/ \
-# && mv /tmp/notebook.json /.jupyter/nbconfig/ \
+# 更改Jupyter插件的配置，使其打开时就勾选了一些常用的应用，这里因为考虑到每次都打开容器时都是-u指定不存在的用户
+# 所以将配置文件放在了/.jupyter/nbconfig中，正常的应该为其用户目录下的这个文件,也可以在打开容器时进行挂载
+&& mkdir /.jupyter \
+&& mkdir /.jupyter/nbconfig/ \
+&& mv /tmp/notebook.json /.jupyter/nbconfig/ \
 # 开放/.local的权限保证所有用户皆可使用jupyter
 && mkdir /.local \
 && chmod 777 /.local
