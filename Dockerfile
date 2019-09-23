@@ -50,8 +50,8 @@ RUN wget --quiet https://repo.anaconda.com/archive/$ANACONDA_VERSION.sh -O ~/ana
 && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
 # 从清华源安装最新稳定版tensorflow-gpu 以及 keras
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade tensorflow-gpu==$TF_VERSION \
-&& pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ --upgrade keras
+RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION \
+&& pip install --no-cache-dir --upgrade keras
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
 RUN pip install --no-cache-dir $TORCH_URL \
@@ -59,9 +59,9 @@ RUN pip install --no-cache-dir $TORCH_URL \
 
 # 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ autopep8 \
+RUN pip install --no-cache-dir autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
-&& pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple/ torchsnooper \
+&& pip install --no-cache-dir torchsnooper \
 # 安装最新NNI
 && python3 -m pip --no-cache-dir install  --upgrade nni \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
