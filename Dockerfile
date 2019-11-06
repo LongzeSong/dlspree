@@ -12,7 +12,8 @@ ENV TF_VERSION=1.14 \
 ANACONDA_VERSION="Anaconda3-2019.07-Linux-x86_64" \
 TORCH_URL="torch" \
 TORCH_VRISION_URL="torchvision" \
-TENSORBOARDX_VERSION=1.9
+TENSORBOARDX_VERSION=1.9 \
+NNI_VERSION=1.1
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
@@ -63,7 +64,7 @@ RUN pip install --no-cache-dir autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir torchsnooper \
 # 安装最新NNI
-&& python3 -m pip --no-cache-dir install  --upgrade nni \
+&& python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
 && pip install xgboost
