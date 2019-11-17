@@ -1,6 +1,49 @@
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
-MAINTAINER songlongze
+ENV HADOOP_VERSION=2.7.2
+LABEL HADOOP_VERSION=2.7.2
+
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get -y update && \
+    apt-get -y install python \
+        python-pip \
+        python-dev \
+        python3 \
+        python3-pip \
+        python3-dev \
+        python-yaml \
+        python-six \
+        build-essential \
+        wget \
+        curl \
+        unzip \
+        automake \
+        openjdk-8-jdk \
+        openssh-server \
+        openssh-client \
+        lsof \
+        libcupti-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN wget -qO- http://archive.apache.org/dist/hadoop/common/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz | \
+    tar xz -C /usr/local && \
+    mv /usr/local/hadoop-${HADOOP_VERSION} /usr/local/hadoop
+
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+    HADOOP_INSTALL=/usr/local/hadoop \
+    NVIDIA_VISIBLE_DEVICES=all
+
+ENV HADOOP_PREFIX=${HADOOP_INSTALL} \
+    HADOOP_BIN_DIR=${HADOOP_INSTALL}/bin \
+    HADOOP_SBIN_DIR=${HADOOP_INSTALL}/sbin \
+    HADOOP_HDFS_HOME=${HADOOP_INSTALL} \
+    HADOOP_COMMON_LIB_NATIVE_DIR=${HADOOP_INSTALL}/lib/native \
+    HADOOP_OPTS="-Djava.library.path=${HADOOP_INSTALL}/lib/native"
+
+ENV PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${HADOOP_BIN_DIR}:${HADOOP_SBIN_DIR} \
+    LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/local/cuda/lib64:/usr/local/cuda/targets/x86_64-linux/lib/stubs:${JAVA_HOME}/jre/lib/amd64/server
+
 
 # 设置环境变量
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -17,7 +60,7 @@ NNI_VERSION=1.1
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
-RUN buildDeps='wget openssh-server net-tools sudo vim ' \ 
+RUN buildDeps='openssh-server net-tools sudo vim ' \ 
 && apt-get update \
 && apt-get install -y $buildDeps \
 # 清除apt缓存
@@ -93,20 +136,3 @@ RUN pip install jupyter_contrib_nbextensions \
 RUN mkdir /workdir \
 && chmod 777 /workdir
 WORKDIR /workdir
-
-# 创建一个普通用户，暂时没啥用，使用时容易出现权限问题
-# 添加一个普通用户，赋予sudo权限、设置密码为111，将目录所有者设定为SongLongze
-RUN useradd -u 65000 --create-home --no-log-init --shell /bin/bash PublicUser \
-&& adduser PublicUser sudo \
-&& echo 'PublicUser:111' | chpasswd \
-&& chown -R PublicUser /home/PublicUser 
-# 默认使用PublicUser用户打开容器
-USER PublicUser
-
-# 开放端口 分别为ssh端口22 jupyter默认端口8888 tensorboard默认端口6006 NNI默认端口8080
-EXPOSE 22 8888 6006 8080
-
-# 设置自启动命令
-#CMD /usr/sbin/sshd -D &
-#CMD service ssh restart &
-#CMD [ "/bin/bash" ]
