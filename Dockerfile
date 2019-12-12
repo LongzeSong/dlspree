@@ -56,7 +56,7 @@ ANACONDA_VERSION="Anaconda3-2019.07-Linux-x86_64" \
 TORCH_URL="torch" \
 TORCH_VRISION_URL="torchvision" \
 TENSORBOARDX_VERSION=1.9 \
-NNI_VERSION=1.1
+NNI_VERSION=1.2
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
