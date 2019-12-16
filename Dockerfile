@@ -106,6 +106,8 @@ RUN pip install --no-cache-dir $TORCH_URL \
 RUN pip install --no-cache-dir autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 && pip install --no-cache-dir torchsnooper \
+# 安装pyecharts
+&& pip install --no-cache-dir pyecharts \
 # 安装最新NNI
 && python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
