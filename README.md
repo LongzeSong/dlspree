@@ -18,3 +18,4 @@
 + `NNI`：`1.2`
 + `jupyter_contrib_nbextensions` 
 + `xgboost`
++ `pyecharts`
