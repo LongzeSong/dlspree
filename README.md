@@ -19,3 +19,4 @@
 + `jupyter_contrib_nbextensions` 
 + `xgboost`
 + `pyecharts`
++ `PyTorch Geometric`
