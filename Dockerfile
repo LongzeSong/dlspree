@@ -101,6 +101,13 @@ RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION \
 RUN pip install --no-cache-dir $TORCH_URL \
 && pip install --no-cache-dir $TORCH_VRISION_URL
 
+# 安装 PyTorch Geometric PyTorch图神经网络库PyG
+RUN pip install --no-cache-dir torch-scatter \
+&& pip install --no-cache-dir torch-sparse \
+&& pip install --no-cache-dir torch-cluster \
+&& pip install  --no-cache-dir torch-spline-conv \
+&& pip install torch-geometric
+
 # 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
 RUN pip install --no-cache-dir autopep8 \
