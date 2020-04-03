@@ -10,7 +10,7 @@
 + `openssh-server`
 + `tensorflow-gpu`：`1.14`
 + `tensorboardX`：`1.9`
-+ `pytorch`:`1.3`
++ `pytorch`:`1.4`
 + `keras`
 + `autopep8`
 + `torchsnooper`
@@ -19,4 +19,4 @@
 + `jupyter_contrib_nbextensions` 
 + `xgboost`
 + `pyecharts`
-+ `PyTorch Geometric`
++ `DGL`

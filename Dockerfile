@@ -50,9 +50,9 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Anaconda的环境变量
 ENV PATH /opt/conda/bin:$PATH 
 
-# torch1.3-cuda10
+# torch1.4-cuda10
 ENV TF_VERSION=1.14 \
-ANACONDA_VERSION="Anaconda3-2019.07-Linux-x86_64" \
+ANACONDA_VERSION="Anaconda3-2020.02-Linux-x86_64" \
 TORCH_URL="torch" \
 TORCH_VRISION_URL="torchvision" \
 TENSORBOARDX_VERSION=1.9 \
@@ -60,7 +60,7 @@ NNI_VERSION=1.2
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
-RUN buildDeps='openssh-server net-tools sudo vim ' \ 
+RUN buildDeps='wget openssh-server net-tools sudo vim ' \ 
 && apt-get update \
 && apt-get install -y $buildDeps \
 # 清除apt缓存
@@ -101,12 +101,14 @@ RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION \
 RUN pip install --no-cache-dir $TORCH_URL \
 && pip install --no-cache-dir $TORCH_VRISION_URL
 
-# 安装 PyTorch Geometric PyTorch图神经网络库PyG
-RUN pip install --no-cache-dir torch-scatter \
-&& pip install --no-cache-dir torch-sparse \
-&& pip install --no-cache-dir torch-cluster \
-&& pip install  --no-cache-dir torch-spline-conv \
-&& pip install torch-geometric
+# 安装 PyTorch Geometric PyTorch图神经网络库PyG 不过此步骤会失败，因为其会验证NVIDIA可用性，但在容器构建时并没有挂载驱动
+# RUN pip install --no-cache-dir torch-scatter \
+# && pip install --no-cache-dir torch-sparse \
+# && pip install --no-cache-dir torch-cluster \
+# && pip install  --no-cache-dir torch-spline-conv \
+# && pip install torch-geometric
+
+
 
 # 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
@@ -115,11 +117,14 @@ RUN pip install --no-cache-dir autopep8 \
 && pip install --no-cache-dir torchsnooper \
 # 安装pyecharts
 && pip install --no-cache-dir pyecharts \
-# 安装最新NNI
+# 安装指定版本NNI
 && python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
 && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
-&& pip install xgboost
+&& pip install xgboost \
+&& pip --no-cache-dir install nvidia-ml-py3 \
+# 安装DGL
+&& pip install --no-cache-dir dgl-cu100
 
 
 
