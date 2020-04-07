@@ -15,7 +15,7 @@
 + `autopep8`
 + `torchsnooper`
 + `pysnooper`
-+ `NNI`：`1.2`
++ `NNI`：`1.4`
 + `jupyter_contrib_nbextensions` 
 + `xgboost`
 + `pyecharts`
