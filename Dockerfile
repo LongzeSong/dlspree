@@ -1,6 +1,6 @@
 FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 
-LABEL maintainer="SongLongze""
+LABEL maintainer="SongLongze"
 
 # 设置环境变量
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
