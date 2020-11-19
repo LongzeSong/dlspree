@@ -6,7 +6,7 @@
 
 + `cuda`：`10.1`
 + `CUDNN`：`7`
-+ `Anaconda`：`2020.07-Linux-x86_64`
++ `Anaconda`：`2020.02-Linux-x86_64`
 + `openssh-server`
 + `tensorflow-gpu`：`1.15`
 + `tensorboardX`：`1.9`
