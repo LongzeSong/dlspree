@@ -1,6 +1,6 @@
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 
-MAINTAINER songlongze
+LABEL maintainer="SongLongze""
 
 # 设置环境变量
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
@@ -9,11 +9,13 @@ ENV PATH /opt/conda/bin:$PATH
 
 # torch1.4-cuda10
 ENV TF_VERSION=1.14 \
-ANACONDA_VERSION="Anaconda3-2020.02-Linux-x86_64" \
-TORCH_URL="torch" \
-TORCH_VRISION_URL="torchvision" \
+ANACONDA_VERSION="Anaconda3-2020.07-Linux-x86_64" \
+TORCH_VERSION=1.7.0 \
+TORCH_VRISION_VERSION=0.8.1 \
+TORCH_AUDIO_VERSION=0.7.0\
 TENSORBOARDX_VERSION=1.9 \
-NNI_VERSION=1.4
+NNI_VERSION=1.4 \
+CUDA_VERSION=101
 
 # 下载依赖的软件包
 # wget下载Anaconda用， 后两个ssh用
@@ -55,8 +57,7 @@ RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION \
 && pip install --no-cache-dir --upgrade keras
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
-RUN pip install --no-cache-dir $TORCH_URL \
-&& pip install --no-cache-dir $TORCH_VRISION_URL
+RUN pip install --no-cache-dir torch==$TORCH_VERSION+cu101 torchvision==$TORCH_VRISION_VERSION+cu$CUDA_VERSION torchaudio==$TORCH_AUDIO_VERSION -f https://download.pytorch.org/whl/torch_stable.html
 
 # 安装 PyTorch Geometric PyTorch图神经网络库PyG 不过此步骤会失败，因为其会验证NVIDIA可用性，但在容器构建时并没有挂载驱动
 # RUN pip install --no-cache-dir torch-scatter \
@@ -81,7 +82,7 @@ RUN pip install --no-cache-dir autopep8 \
 && pip install xgboost \
 && pip --no-cache-dir install nvidia-ml-py3 \
 # 安装DGL
-&& pip install --no-cache-dir dgl-cu100
+&& pip install --no-cache-dir dgl-cu${CUDA_VERSION}
 
 
 
