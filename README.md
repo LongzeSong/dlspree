@@ -8,7 +8,7 @@
 + `CUDNN`：`7`
 + `Anaconda`：`2020.02-Linux-x86_64`
 + `openssh-server`
-+ `tensorflow-gpu`：`1.15`
++ `tensorflow-gpu`：`1.14`
 + `tensorboardX`：`1.9`
 + `pytorch`:`1.7`
 + `keras`
