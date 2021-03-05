@@ -79,7 +79,8 @@ RUN pip install --no-cache-dir autopep8 \
 && pip install --no-cache-dir dgl-cu${CUDA_VERSION}
 
 
-
+# 安装解决cudatoolkit以tf2.4不能使用gpu的问题
+RUN conda install cudatoolkit
 # 添加jupyter插件的配置文件
 COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
