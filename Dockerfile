@@ -8,13 +8,8 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH 
 
 # torch1.4-cuda10
-ENV TF_VERSION=1.15 \
+ENV TF_VERSION=2.4 \
 ANACONDA_VERSION="Anaconda3-2020.02-Linux-x86_64" \
-TORCH_VERSION=1.7.0 \
-TORCH_VRISION_VERSION=0.8.1 \
-TORCH_AUDIO_VERSION=0.7.0 \
-TENSORBOARDX_VERSION=1.9 \
-NNI_VERSION=1.4 \
 CUDA_VERSION=101
 
 # 下载依赖的软件包
@@ -53,11 +48,10 @@ RUN wget --quiet https://repo.anaconda.com/archive/$ANACONDA_VERSION.sh -O ~/ana
 && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
 # 从清华源安装最新稳定版tensorflow-gpu 以及 keras
-RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION \
-&& pip install --no-cache-dir --upgrade keras
+RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
-RUN pip install --no-cache-dir torch==$TORCH_VERSION+cu101 torchvision==$TORCH_VRISION_VERSION+cu$CUDA_VERSION torchaudio==$TORCH_AUDIO_VERSION -f https://download.pytorch.org/whl/torch_stable.html
+# RUN pip install --no-cache-dir torch==$TORCH_VERSION+cu101 torchvision==$TORCH_VRISION_VERSION+cu$CUDA_VERSION torchaudio==$TORCH_AUDIO_VERSION -f https://download.pytorch.org/whl/torch_stable.html
 
 # 安装 PyTorch Geometric PyTorch图神经网络库PyG 不过此步骤会失败，因为其会验证NVIDIA可用性，但在容器构建时并没有挂载驱动
 # RUN pip install --no-cache-dir torch-scatter \
@@ -72,12 +66,12 @@ RUN pip install --no-cache-dir torch==$TORCH_VERSION+cu101 torchvision==$TORCH_V
 # 从清华源安装代码格式化工具
 RUN pip install --no-cache-dir autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
-&& pip install --no-cache-dir torchsnooper \
+# && pip install --no-cache-dir torchsnooper \
 # 安装pyecharts
 && pip install --no-cache-dir pyecharts \
 # 安装指定版本NNI
-&& python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
-&& pip install tensorboardX==$TENSORBOARDX_VERSION \
+# && python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
+# && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
 && pip install xgboost \
 && pip --no-cache-dir install nvidia-ml-py3 \
