@@ -7,9 +7,8 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 # Anaconda的环境变量
 ENV PATH /opt/conda/bin:$PATH 
 
-# torch1.4-cuda10
-ENV TF_VERSION=2.4 \
-ANACONDA_VERSION="Anaconda3-2020.02-Linux-x86_64" \
+ENV TF_VERSION=1.15 \
+ANACONDA_VERSION="Anaconda3-2020.11-Linux-x86_64" \
 CUDA_VERSION=101
 
 # 下载依赖的软件包
@@ -47,7 +46,7 @@ RUN wget --quiet https://repo.anaconda.com/archive/$ANACONDA_VERSION.sh -O ~/ana
 && ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh  \
 && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc  
 
-# 从清华源安装最新稳定版tensorflow-gpu 以及 keras
+# 从清华源安装最新稳定版tensorflow-gpu 
 RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION
 
 # 安装pytorch-GPU 安装命令从官网获取也可以使用清华源
@@ -64,23 +63,23 @@ RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION
 
 # 安装常用的python包以及NNI
 # 从清华源安装代码格式化工具
-RUN pip install --no-cache-dir autopep8 \
+#RUN pip install --no-cache-dir autopep8 \
 # 从清华源安装torchsnooper pytroch代码调试工具，安装时会自动安装python代码调试工具 pysnooper
 # && pip install --no-cache-dir torchsnooper \
 # 安装pyecharts
-&& pip install --no-cache-dir pyecharts \
+#&& pip install --no-cache-dir pyecharts \
 # 安装指定版本NNI
 # && python3 -m pip --no-cache-dir install  --upgrade nni==$NNI_VERSION \
 # && pip install tensorboardX==$TENSORBOARDX_VERSION \
 # 安装XGBoost
-&& pip install xgboost \
-&& pip --no-cache-dir install nvidia-ml-py3 \
+#&& pip install xgboost \
+#&& pip --no-cache-dir install nvidia-ml-py3 \
 # 安装DGL
-&& pip install --no-cache-dir dgl-cu${CUDA_VERSION}
+RUN pip install --no-cache-dir dgl-cu${CUDA_VERSION}
 
 
 # 安装解决cudatoolkit以tf2.4不能使用gpu的问题
-RUN conda install cudatoolkit
+#RUN conda install cudatoolkit
 # 添加jupyter插件的配置文件
 COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
