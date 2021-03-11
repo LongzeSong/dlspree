@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04
 
 LABEL maintainer="SongLongze"
 
@@ -78,8 +78,8 @@ RUN pip install --no-cache-dir  --upgrade tensorflow-gpu==$TF_VERSION
 RUN pip install --no-cache-dir dgl-cu${CUDA_VERSION}
 
 
-# 安装解决cudatoolkit以tf2.4不能使用gpu的问题
-#RUN conda install cudatoolkit
+# 安装解决cudatoolkit以tf不能使用gpu的问题
+RUN conda install -y cudatoolkit
 # 添加jupyter插件的配置文件
 COPY ["notebook.json", "run.sh", "/tmp/"]
 # 安装jupyter插件
