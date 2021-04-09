@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 
 LABEL maintainer="SongLongze"
 
@@ -8,8 +8,8 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 ENV PATH /opt/conda/bin:$PATH 
 
 # torch1.4-cuda10
-ENV TF_VERSION=2.4 \
-ANACONDA_VERSION="Anaconda3-2020.02-Linux-x86_64" \
+ENV TF_VERSION=2.3 \
+ANACONDA_VERSION="Anaconda3-2019.03-Linux-x86_64" \
 CUDA_VERSION=101
 
 # 下载依赖的软件包
